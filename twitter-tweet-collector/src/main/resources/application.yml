@@ -1,0 +1,12 @@
+server:
+    port: 8080
+application:
+    name: TWITTER-TWEET-COLLECTOR
+
+twitter4j:
+  debug: false
+  oauth:
+    consumerKey: YOUR_CONSUMER_KEY
+    consumerSecret: YOUR_SECRET
+    accessToken: YOUR_ACCESS_TOKEN
+    accessTokenSecret: YOUR_TOKEN_SECRET
