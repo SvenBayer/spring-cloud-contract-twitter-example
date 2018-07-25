@@ -30,12 +30,10 @@ public class TweetQueryProvider {
             query.setLang(tweetParams.getLang());
         }
         if (tweetParams.getSince() != null) {
-            query.setSince(tweetParams.getSince().format(FORMATTER));
+            query.setSince(FORMATTER.format(tweetParams.getSince()));
         }
-        if (tweetParams.getCount() != 0) {
-            query.setCount(tweetParams.getCount());
-        }
-        QueryResult result = null;
+        query.setCount(tweetParams.getCount());
+        QueryResult result;
         try {
             result = twitter.search(query);
         } catch (TwitterException e) {

@@ -1,12 +1,23 @@
 server:
-    port: 8080
-application:
-    name: TWITTER-TWEET-COLLECTOR
+    port: 8090
+spring:
+  application:
+    name: twitter-tweet-collector
+
+management:
+  server:
+    port: 8091
+    address: 127.0.0.1
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
 
 twitter4j:
   debug: false
   oauth:
-    consumerKey: YOUR_CONSUMER_KEY
-    consumerSecret: YOUR_SECRET
-    accessToken: YOUR_ACCESS_TOKEN
-    accessTokenSecret: YOUR_TOKEN_SECRET
+    consumerKey: # Do not paste your information here! Create a application-keys.yml
+    consumerSecret: # Do not paste your information here! Create a application-keys.yml
+    accessToken: # Do not paste your information here! Create a application-keys.yml
+    accessTokenSecret: # Do not paste your information here! Create a application-keys.yml

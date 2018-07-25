@@ -13,5 +13,6 @@
     <modules>
         <module>twitter-tweet-collector</module>
         <module>twitter-goal-analyser</module>
+        <module>discovery-service</module>
     </modules>
 </project>

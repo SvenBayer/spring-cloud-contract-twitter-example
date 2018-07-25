@@ -1,5 +1,6 @@
 package de.svenbayer.blog.cdc.twitter.example.twitter.goal.analyser.provider;
 
+import de.svenbayer.blog.cdc.twitter.example.twitter.goal.analyser.client.SimpleTweetClient;
 import de.svenbayer.blog.cdc.twitter.example.twitter.goal.analyser.model.SimpleTweet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -19,26 +20,21 @@ import java.util.List;
 @Service
 public class WorldCupTweetProvider {
 
-    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_DATE;
-    private static final ParameterizedTypeReference<List<SimpleTweet>> SIMPLE_TWEET_REFERENCE = new ParameterizedTypeReference<List<SimpleTweet>>() {
-    };
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_DATE;
+    private static final ParameterizedTypeReference<List<SimpleTweet>> SIMPLE_TWEET_REFERENCE = new ParameterizedTypeReference<List<SimpleTweet>>() {};
     private static final String TWEET_COLLECTOR_URL = "http://localhost:8080/twitter-tweet-collector/tweets/search/hashtag/goal?count=100&since=";
 
-    private RestTemplate restTemplate;
+    private SimpleTweetClient simpleTweetClient;
 
     @Autowired
-    public WorldCupTweetProvider(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    public WorldCupTweetProvider(SimpleTweetClient simpleTweetClient) {
+        this.simpleTweetClient = simpleTweetClient;
     }
 
     public List<SimpleTweet> worldCupTweets() {
-        URI url = null;
-        try {
-            url = new URI(TWEET_COLLECTOR_URL + LocalDate.now().format(FORMATTER));
-        } catch (URISyntaxException e) {
-            throw new IllegalStateException(e);
-        }
-        ResponseEntity<List<SimpleTweet>> response = restTemplate.exchange(url, HttpMethod.GET, HttpEntity.EMPTY, SIMPLE_TWEET_REFERENCE);
+        String now = LocalDate.now().format(FORMATTER);
+        //ResponseEntity<List<SimpleTweet>> response = simpleTweetClient.searchTweets("goal", "en", now, "100");
+        ResponseEntity<List<SimpleTweet>> response = simpleTweetClient.searchTweets("goal", "en", LocalDate.now(), 100);
         if (!HttpStatus.OK.equals(response.getStatusCode())) {
             throw new IllegalStateException("Twitter Tweet Collector returned invalid response!");
         }

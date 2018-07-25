@@ -8,6 +8,8 @@ import de.svenbayer.blog.cdc.twitter.example.twitter.goal.analyser.provider.Worl
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -24,8 +26,16 @@ public class CountryGoalService {
         SimpleHashTag countryHashTag = new SimpleHashTag(country.getCountry());
         List<SimpleTweet> goalTweets = worldCupTweetProvider.worldCupTweets();
         long goals = goalTweets.stream()
-                .filter(tweet -> tweet.getText().contains(country.getCountry()))
+                .map(SimpleTweet::getHashTagEntities)
+                .map(Arrays::asList)
+                .flatMap(Collection::stream)
+                .flatMap(Collection::stream)
+                .filter(t -> t.equals(countryHashTag))
                 .count();
+
+        /*long goals = goalTweets.stream()
+                .filter(tweet -> tweet.getText().contains(country.getCountry()))
+                .count();*/
         return new CountryGoals(country, goals);
     }
 }
